@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PlacesTest.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PlacesTest"
+    xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps">
+    <!--  xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" - is needed for GoogleMaps  -->
+
+
+    <StackLayout Padding="30" VerticalOptions="Start">
+        <maps:Map
+            x:Name="MyMap"
+            HasScrollEnabled="True"
+            HasZoomEnabled="True"
+            HeightRequest="300"
+            IsShowingUser="true"
+            MapType="Street"
+            WidthRequest="320" />
+
+
+        <Entry Text="{Binding AddressInput}" />
+        <Button Command="{Binding GetPlaces}" Text="Get Places" />
+        <ListView ItemsSource="{Binding Addresses}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Address}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
+</ContentPage>
