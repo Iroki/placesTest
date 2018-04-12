@@ -115,7 +115,7 @@ namespace PlacesTest
         // PART 2. Here we call the Places API:
 
         // Default: public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua"; //Adding country:us limits results to us
-        public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=5000";
+        public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=uk&types=establishment&location={2},{3}&strictbounds&radius=2000";
         //public const string GooglePlacesApiAutoCompletePathFarther = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=2000";
         //public const string GooglePlacesApiAutoCompletePathFarthest = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=5000";
         //"location — The point around which you wish to retrieve place information. Must be specified as latitude,longitude."
@@ -169,7 +169,7 @@ namespace PlacesTest
                        CancellationToken cancellationToken = new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token;
 
                        // DEFAULT:   using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, string.Format(GooglePlacesApiAutoCompletePath, GooglePlacesApiKey, WebUtility.UrlEncode(_addressInput))) //Be sure to UrlEncode the search term they enters
-                       using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, string.Format(GooglePlacesApiAutoCompletePath, GooglePlacesApiKey, WebUtility.UrlEncode(_addressInput), ViewModelOne.GetCurrentPosition().Result.Latitude, ViewModelOne.GetCurrentPosition().Result.Longitude))) //Be sure to UrlEncode the search term they enters
+                       using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, string.Format(GooglePlacesApiAutoCompletePath, GooglePlacesApiKey, WebUtility.UrlEncode(_addressInput), ViewModelOne.GetCurrentPosition().Result.Latitude, ViewModelOne.GetCurrentPosition().Result.Longitude))) //Be sure to UrlEncode the search term they enter
                        {
 
                            using (HttpResponseMessage message = await HttpClientInstance.SendAsync(request, HttpCompletionOption.ResponseContentRead, cancellationToken).ConfigureAwait(false))
@@ -269,16 +269,15 @@ namespace PlacesTest
             {
                 _referencePositions = value;
                 RaisePropertyChanged();
-                InvokeReferencePositionAdded();
             }
 
         }
 
-        public event EventHandler ReferencePositionAdded;
+        public event EventHandler<Xamarin.Forms.Maps.Position> ReferencePositionAdded; // Добавил Коля возвращение позиции
 
-        private void InvokeReferencePositionAdded()
+        private void InvokeReferencePositionAdded(Xamarin.Forms.Maps.Position position) // Добавил Коля, возвращается позиция
         {
-            ReferencePositionAdded?.Invoke(this, EventArgs.Empty);
+            ReferencePositionAdded?.Invoke(this, position);
         }
 
         public const string GooglePlacesReferenceSearch = "https://maps.googleapis.com/maps/api/place/details/json?reference={0}&sensor=true&key={1}";
@@ -302,6 +301,8 @@ namespace PlacesTest
 
                             Xamarin.Forms.Maps.Position newPosition = new Xamarin.Forms.Maps.Position(refSearch.result.geometry.location.lat, refSearch.result.geometry.location.lng);
                             ReferencePositions.Add(newPosition);
+                            
+                            InvokeReferencePositionAdded(newPosition); //добавил Коля
                             return newPosition;
                         }
                         else

@@ -23,13 +23,11 @@ namespace PlacesTest
                 Current_PositionChanged(sender, e);
             };
 
-            viewModelOne.ReferencePositionAdded += (sender, e) => //doesn't work, should add pins to the map at some point
+            viewModelOne.ReferencePositionAdded += (sender, e) => 
             {
 
-                foreach (var position in viewModelOne.ReferencePositions)
-                {
-                    AddMorePins(position);
-                }
+                Device.BeginInvokeOnMainThread(() => AddMorePins(e));
+                    
             };
 
 
