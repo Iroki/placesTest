@@ -114,17 +114,7 @@ namespace PlacesTest
 
         // PART 2. Here we call the Places API:
 
-        // Default: public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua"; //Adding country:us limits results to us
-        public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=uk&types=establishment&location={2},{3}&strictbounds&radius=2000";
-        //public const string GooglePlacesApiAutoCompletePathFarther = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=2000";
-        //public const string GooglePlacesApiAutoCompletePathFarthest = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=5000";
-        //"location — The point around which you wish to retrieve place information. Must be specified as latitude,longitude."
-
-        public const string GooglePlacesApiKey = "AIzaSyAfP9wu3t4g0y3-UQE6sy5W6wFF03w9Cd0";
-
-        private static HttpClient _httpClientInstance;
-        public static HttpClient HttpClientInstance => _httpClientInstance ?? (_httpClientInstance = new HttpClient());
-
+        
         private ObservableCollection<AddressInfo> _addresses;
         public ObservableCollection<AddressInfo> Addresses
         {
@@ -153,6 +143,24 @@ namespace PlacesTest
                     _addressInput = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+
+        // Default: public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua"; //Adding country:us limits results to us
+        public const string GooglePlacesApiAutoCompletePath = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=uk&types=establishment&location={2},{3}&strictbounds&radius=2000";
+        //public const string GooglePlacesApiAutoCompletePathFarther = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=2000";
+        //public const string GooglePlacesApiAutoCompletePathFarthest = "https://maps.googleapis.com/maps/api/place/autocomplete/json?key={0}&input={1}&components=country:ua&language=ru&types=establishment&location={2},{3}&strictbounds&radius=5000";
+        //"location — The point around which you wish to retrieve place information. Must be specified as latitude,longitude."
+
+        public const string GooglePlacesApiKey = "AIzaSyAfP9wu3t4g0y3-UQE6sy5W6wFF03w9Cd0";
+
+        private static HttpClient _httpClientInstance;
+        public static HttpClient HttpClientInstance
+        {
+            get
+            {
+                return _httpClientInstance ?? (_httpClientInstance = new HttpClient());
             }
         }
 
